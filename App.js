@@ -10,12 +10,17 @@ import PatientsScreen from './src/screens/PatientsScreen';
 import PatientFormScreen from './src/screens/PatientFormScreen';
 import AppointmentsScreen from './src/screens/AppointmentsScreen';
 import AppointmentFormScreen from './src/screens/AppointmentFormScreen';
+import MealPlansScreen from './src/screens/MealPlansScreen';
+import MealPlanFormScreen from './src/screens/MealPlanFormScreen';
+import MealPlanDetailScreen from './src/screens/MealPlanDetailScreen';
+import MealFormScreen from './src/screens/MealFormScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const PatientsStack = createNativeStackNavigator();
 const AppointmentsStack = createNativeStackNavigator();
+const PlansStack = createNativeStackNavigator();
 
 const PatientsNavigator = () => (
   <PatientsStack.Navigator>
@@ -35,13 +40,28 @@ const AppointmentsNavigator = () => (
   </AppointmentsStack.Navigator>
 );
 
+const PlansNavigator = () => (
+  <PlansStack.Navigator>
+    <PlansStack.Screen name="MealPlanList" component={MealPlansScreen} options={{ title: 'Planes alimenticios' }} />
+    <PlansStack.Screen name="MealPlanDetail" component={MealPlanDetailScreen}
+      options={({ route }) => ({ title: route.params?.plan?.name || 'Plan' })}
+    />
+    <PlansStack.Screen name="MealPlanForm" component={MealPlanFormScreen}
+      options={({ route }) => ({ title: route.params?.plan ? 'Editar plan' : 'Nuevo plan' })}
+    />
+    <PlansStack.Screen name="MealForm" component={MealFormScreen}
+      options={({ route }) => ({ title: route.params?.meal ? 'Editar comida' : 'Nueva comida' })}
+    />
+  </PlansStack.Navigator>
+);
+
 const MainTabs = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
       tabBarActiveTintColor: '#2e7d32',
       tabBarInactiveTintColor: '#999',
       tabBarIcon: ({ color, size }) => {
-        const icons = { Dashboard: 'home', Pacientes: 'people', Citas: 'calendar', Perfil: 'person' };
+        const icons = { Dashboard: 'home', Pacientes: 'people', Citas: 'calendar', Planes: 'restaurant', Perfil: 'person' };
         return <Ionicons name={icons[route.name]} size={size} color={color} />;
       },
     })}
@@ -49,6 +69,7 @@ const MainTabs = () => (
     <Tab.Screen name="Dashboard" component={DashboardScreen} />
     <Tab.Screen name="Pacientes" component={PatientsNavigator} options={{ headerShown: false }} />
     <Tab.Screen name="Citas" component={AppointmentsNavigator} options={{ headerShown: false }} />
+    <Tab.Screen name="Planes" component={PlansNavigator} options={{ headerShown: false }} />
     <Tab.Screen name="Perfil" component={ProfileScreen} />
   
   </Tab.Navigator>
