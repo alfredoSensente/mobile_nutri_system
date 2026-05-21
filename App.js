@@ -9,11 +9,13 @@ import DashboardScreen from './src/screens/DashboardScreen';
 import PatientsScreen from './src/screens/PatientsScreen';
 import PatientFormScreen from './src/screens/PatientFormScreen';
 import AppointmentsScreen from './src/screens/AppointmentsScreen';
+import AppointmentFormScreen from './src/screens/AppointmentFormScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const PatientsStack = createNativeStackNavigator();
+const AppointmentsStack = createNativeStackNavigator();
 
 const PatientsNavigator = () => (
   <PatientsStack.Navigator>
@@ -22,6 +24,15 @@ const PatientsNavigator = () => (
       options={({ route }) => ({ title: route.params?.patient ? 'Editar paciente' : 'Nuevo paciente' })}
     />
   </PatientsStack.Navigator>
+);
+
+const AppointmentsNavigator = () => (
+  <AppointmentsStack.Navigator>
+    <AppointmentsStack.Screen name="AppointmentList" component={AppointmentsScreen} options={{ title: 'Citas' }} />
+    <AppointmentsStack.Screen name="AppointmentForm" component={AppointmentFormScreen}
+      options={({ route }) => ({ title: route.params?.appointment ? 'Editar cita' : 'Nueva cita' })}
+    />
+  </AppointmentsStack.Navigator>
 );
 
 const MainTabs = () => (
@@ -37,8 +48,9 @@ const MainTabs = () => (
   >
     <Tab.Screen name="Dashboard" component={DashboardScreen} />
     <Tab.Screen name="Pacientes" component={PatientsNavigator} options={{ headerShown: false }} />
-    <Tab.Screen name="Citas" component={AppointmentsScreen} />
+    <Tab.Screen name="Citas" component={AppointmentsNavigator} options={{ headerShown: false }} />
     <Tab.Screen name="Perfil" component={ProfileScreen} />
+  
   </Tab.Navigator>
 );
 
